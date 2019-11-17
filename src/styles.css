@@ -498,3 +498,9 @@ nav .nav-logo {
   width: 260px;
   height: 45px;
 }
+
+/* register */
+.register input[type="text"] {
+  width: 260px;
+  height: 45px;
+}
