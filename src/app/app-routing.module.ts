@@ -6,6 +6,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { AccountModule } from './account/account.module';
+import { AuthGuard } from './auth/auth.guard';
+
 const routes: Routes = [
   {
     path: 'home', component: HomeComponent
@@ -26,10 +28,8 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    // lazy load
-    loadChildren: () => import('./account/account.module').then(mod => mod.AccountModule)
-    // without lazy load
-    // loadChildren: () => AccountModule
+    loadChildren: () => import('./account/account.module').then(mod => mod.AccountModule),
+    canActivate: [AuthGuard],
   },
   {
     path: '', redirectTo: 'home', pathMatch: 'full'
