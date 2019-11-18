@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Account } from '../../account';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AccountsService } from '../accounts.service';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { Location } from '@angular/common';
 
 @Component({
@@ -20,8 +20,8 @@ export class AccountDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.account$ = this.route.paramMap.pipe(
-      switchMap(params => this.accountService.getAccount(+params.get('id')))
+    this.account$ = this.route.data.pipe(
+      map(v => v.account)
     );
   }
 
