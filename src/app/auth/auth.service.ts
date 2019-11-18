@@ -24,4 +24,8 @@ export class AuthService {
 
     return of(isNoob);
   }
+
+  logout() {
+    this.isLoggedIn$.next(false);
+  }
 }

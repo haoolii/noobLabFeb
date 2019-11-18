@@ -1,10 +1,17 @@
+<div class="loading flex flex-justify-content" [ngClass]="{isloading: loading}"></div>
 <nav>
   <a href="/" class="nav-logo">noobLabFeb</a>
   <div class="nav-links">
-      <a [routerLink]="['/home']" class="nav-link">Home</a>
-      <a [routerLink]="['/about']" class="nav-link" routerLinkActive="active">About</a>
-      <a [routerLink]="['/user/login']" class="nav-link button button-orange" routerLinkActive="active">login</a>
-      <a [routerLink]="['/user/register']" class="nav-link button button-orange" routerLinkActive="active">register</a>
+      <ng-container *ngIf="status$ | async; else elseLogIn";>
+        <a [routerLink]="['/auth/accounts']" class="nav-link" routerLinkActive="active">Accounts</a>
+        <a [routerLink]="['/user/login']" class="nav-link button button-orange"  (click)="logout()">logout</a>
+      </ng-container>
+      <ng-template #elseLogIn>
+          <a [routerLink]="['/home']" class="nav-link">Home</a>
+          <a [routerLink]="['/about']" class="nav-link" routerLinkActive="active">About</a>
+          <a [routerLink]="['/user/login']" class="nav-link button button-orange" routerLinkActive="active">login</a>
+          <a [routerLink]="['/user/register']" class="nav-link button button-orange" routerLinkActive="active">register</a>
+      </ng-template>
   </div>
 </nav>
 <router-outlet></router-outlet>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, NavigationCancel } from '@angular/router';
 import { Observable, timer, of } from 'rxjs';
 import { AuthService } from './auth.service';
-import { filter } from 'rxjs/operators';
+import { filter, tap, delay, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   ) {
     this.router.events
         .pipe(
+          tap(e => console.log(e)),
           filter(e => e instanceof NavigationCancel)
         )
         .subscribe(() => {
@@ -25,6 +26,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+      console.log('canActivate');
       return this.authService.isLoggedIn$;
   }
   canActivateChild(
