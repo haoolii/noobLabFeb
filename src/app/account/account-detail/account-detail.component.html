@@ -1,0 +1,17 @@
+<div class="accounts page">
+  <div class="card detail" *ngIf="account$ | async as account">
+    <div class="back cursor-pointer" (click)="back()">
+      <h1><</h1>
+    </div>
+    <div class="flex flex-space-between">
+      <h1 class="event">{{account.event}}</h1>
+      <h2 class="price">{{account.price | currency:'NTD'}}</h2>
+    </div>
+    <p class="date">
+      {{account.description}}
+    </p>
+    <h4 class="date">
+      {{account.createDate}}
+    </h4>
+  </div>
+</div>

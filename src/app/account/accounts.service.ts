@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Account } from '../account';
 import { Observable, of, from } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -50,12 +50,15 @@ export class AccountsService {
   ];
 
   getAccounts(): Observable<Account[]> {
-    return of(this.accounts.sort((a, b) => b.id - a.id));
+    return of(this.accounts.sort((a, b) => b.id - a.id)).pipe(
+      delay(200)
+    );
   }
 
   getAccount(id): Observable<Account> {
     return from(this.accounts).pipe(
-      filter(account => account.id === id)
+      filter(v => +v.id === +id),
+      delay(1500)
     );
   }
 
