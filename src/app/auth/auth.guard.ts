@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, NavigationCancel } from '@angular/router';
-import { Observable, timer } from 'rxjs';
+import { Observable, timer, of } from 'rxjs';
 import { AuthService } from './auth.service';
 import { filter } from 'rxjs/operators';
 
@@ -35,6 +35,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   canLoad(
     route: Route,
     segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
-    return this.authService.isLoggedIn$;
+    return of(this.authService.isLoggedIn$.value);
   }
 }
