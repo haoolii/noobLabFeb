@@ -813,6 +813,9 @@ This is the code for this part of the completion.
 ## step-7 Preload 預先載入模組
 > lazyLoad可以省下載入的時間，但當需要模組時的那一刻卻要等待，preload可以預先載入卻不會影響第一次載入時間。
 
+尚未登入，卻已經載入。
+![](https://i.imgur.com/VxAj1eZ.png)
+
 PreloadAllModules預設是會預載所有lazyLoad的非同步module，但可以克制化屬於自己的預載策略。
 ```
 ...
@@ -830,7 +833,50 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 This is the code for this part of the completion.
 > `git checkout -f step-7`
 
-## step-8 美化
+## step-8 canLoad 限制載入模組
+> 限制載入模組路徑必須為登入狀態，否則不會載入模組，節省不必要的載入。
+
+在auth.guard.ts增加canLoad，預設為true。
+```
+ canLoad(
+    route: Route,
+    segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
+    return true;
+  }
+```
+
+於指定路由設置canLoad這一guard。
+
+```
+// app-routing.module.ts
+
+...
+  {
+    path: 'auth',
+    loadChildren: () => import('./account/account.module').then(mod => mod.AccountModule),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+...
+```
+
+測試看看是否一樣可以正常登入。
+
+接者修改我們的canLoad。由於canLoad不能處理subject型態，於是取出value且以observable的型態傳回。 這樣canLoad可以判斷是否登陸再決定是否載入模組。
+```
+  canLoad(
+    route: Route,
+    segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
+    return of(this.authService.isLoggedIn$.value);
+  }
+```
+
+測試看看是否正常運作。
+
+This is the code for this part of the completion.
+`git checkout -f step-8`
+
+## step-9 美化
 > 美化一些部分
 
 * 增加loading屏蔽
@@ -838,5 +884,5 @@ This is the code for this part of the completion.
 * 登出功能
 
 This is the code for this part of the completion.
-`git checkout -f step-8`
+`git checkout -f step-9`
 
